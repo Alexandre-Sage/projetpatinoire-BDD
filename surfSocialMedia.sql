@@ -50,7 +50,7 @@ CREATE TABLE usersProfils(
     password VARCHAR(250) NOT NULL,
     homeSpot VARCHAR(50),
     description VARCHAR(350),
-    creationDate DATETIME
+    profilCreationDate DATETIME NOT NULL
 )ENGINE=InnoDB;
 
 /*TABLE FORUM*/
@@ -79,8 +79,9 @@ CREATE TABLE forumTopics(
     ON DELETE RESTRICT ON UPDATE CASCADE,
 /*FIN FOREIGN KEY userId*/
 
-    topicTitle VARCHAR(150) NOT NULL UNIQUE,
-    topicFirstContent VARCHAR(3500) NOT NULL
+    topicTitle VARCHAR(150) NOT NULL,
+    topicFirstContent VARCHAR(3500) NOT NULL,
+    topicCreationDate DATETIME NOT NULL
 )ENGINE=InnoDB;
 
 CREATE TABLE forumPosts(
@@ -102,5 +103,6 @@ CREATE TABLE forumPosts(
     ON DELETE RESTRICT ON UPDATE CASCADE,
 /*FIN FOREIGN KEY userId*/
 
-    postContent VARCHAR(3500)
+    postContent VARCHAR(3500),
+    postCreationDate DATETIME
 )ENGINE=InnoDB;
