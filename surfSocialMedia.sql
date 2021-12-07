@@ -2,6 +2,7 @@
 CREATE SCHEMA SurfSocialMedia;
 USE SurfSocialMedia;
 
+
 CREATE TABLE countries(
     countryId INTEGER PRIMARY KEY AUTO_INCREMENT NOT NULL,
     countryName VARCHAR(200) UNIQUE
@@ -17,8 +18,8 @@ CREATE TABLE towns(
     CONSTRAINT `foreignKeyCountryId_town`
     FOREIGN KEY (countryId) REFERENCES countries(countryId)
     ON DELETE RESTRICT ON UPDATE CASCADE,
-
 /*FIN FOREIGN KEYS countryId*/
+
     townName VARCHAR(500) UNIQUE
 )ENGINE=InnoDB;
 
@@ -61,7 +62,7 @@ CREATE TABLE forumCategories(
 )ENGINE=InnoDB;
 
 CREATE TABLE forumTopics(
-    topicId INTEGER PRIMARY KEY AUTO_INCREMENT,
+    topicId INTEGER PRIMARY KEY AUTO_INCREMENT NOT NULL,
 
 /*DEBUT FOREIGN KEY cayegoryId*/
     categoryId INTEGER NOT NULL,
@@ -69,7 +70,7 @@ CREATE TABLE forumTopics(
     CONSTRAINT `foreignKeyCategoryId_topic`
     FOREIGN KEY (categoryId) REFERENCES forumCategories (categoryId)
     ON DELETE RESTRICT ON UPDATE CASCADE,
-    /*FIN FOREIGN KEY categoryId*/
+/*FIN FOREIGN KEY categoryId*/
 
 /*DEBUT FOREIGN KEY userId*/
     userId INTEGER NOT NULL,
@@ -85,7 +86,7 @@ CREATE TABLE forumTopics(
 )ENGINE=InnoDB;
 
 CREATE TABLE forumPosts(
-    postId INTEGER PRIMARY KEY AUTO_INCREMENT,
+    postId INTEGER PRIMARY KEY AUTO_INCREMENT NOT NULL,
 
 /*DEBUT FOREIGN KEY topicId*/
     topicId INTEGER NOT NULL,
@@ -106,3 +107,35 @@ CREATE TABLE forumPosts(
     postContent VARCHAR(3500),
     postCreationDate DATETIME
 )ENGINE=InnoDB;
+
+CREATE TABLE chatFlows(
+    flowId INTEGER PRIMARY KEY AUTO_INCREMENT NOT NULL,
+/*DEBUT FOREIGN KEY ID DE L'ÉMMETEUR*/
+    sendingUserId INTEGER NOT NULL,
+    KEY foreignKeySendingUserId_topic(sendingUserId),
+    CONSTRAINT `foreignKeySendingUserId_flow`
+    FOREIGN KEY (sendingUserId) REFERENCES usersProfils (userId)
+    ON DELETE RESTRICT ON UPDATE CASCADE,
+/*FIN FOREIGN KEY EMMETEUR*/
+
+/*DEBUT FOREIGN KEY ID DESTINATAIRE*/
+    receiverUserId INTEGER NOT NULL,
+    KEY foreignReceiverKeyUserId_topic(receiverUserId),
+    CONSTRAINT `foreignKeyReceiverUserId_flow`
+    FOREIGN KEY (receiverUserId) REFERENCES usersProfils (userId)
+    ON DELETE RESTRICT ON UPDATE CASCADE
+/*FIN FOREIGN KEY ID DESTINATAIRE*/
+);
+
+CREATE TABLE chatMessages(
+    messageId INTEGER PRIMARY KEY AUTO_INCREMENT NOT NULL,
+/*DEBUT FOREIGN KEY FLOW ID*/
+    flowId INTEGER NOT NULL,
+    KEY foreignKeyFlowId_message(flowId),
+    CONSTRAINT `foreignKeyFlowId_message`
+    FOREIGN KEY (flowId) REFERENCES chatFlows (flowId)
+    ON DELETE RESTRICT ON UPDATE CASCADE,
+/*FIN FOREIGN KEY FLOW ID*/
+
+    content VARCHAR(10000)
+);
