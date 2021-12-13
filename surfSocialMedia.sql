@@ -1,4 +1,3 @@
-
 CREATE SCHEMA SurfSocialMedia;
 USE SurfSocialMedia;
 
@@ -19,8 +18,8 @@ CREATE TABLE towns(
     FOREIGN KEY (countryId) REFERENCES countries(countryId)
     ON DELETE RESTRICT ON UPDATE CASCADE,
 /*FIN FOREIGN KEYS countryId*/
-
-    townName VARCHAR(500) UNIQUE
+    postalCode INTEGER UNIQUE NOT NULL,
+    townName VARCHAR(500)
 )ENGINE=InnoDB;
 
 
@@ -108,6 +107,7 @@ CREATE TABLE forumPosts(
     postCreationDate DATETIME
 )ENGINE=InnoDB;
 
+
 CREATE TABLE chatFlows(
     flowId INTEGER PRIMARY KEY AUTO_INCREMENT NOT NULL,
 /*DEBUT FOREIGN KEY ID DE L'ÉMMETEUR*/
@@ -123,9 +123,10 @@ CREATE TABLE chatFlows(
     KEY foreignReceiverKeyUserId_topic(receiverUserId),
     CONSTRAINT `foreignKeyReceiverUserId_flow`
     FOREIGN KEY (receiverUserId) REFERENCES usersProfils (userId)
-    ON DELETE RESTRICT ON UPDATE CASCADE
+    ON DELETE RESTRICT ON UPDATE CASCADE,
 /*FIN FOREIGN KEY ID DESTINATAIRE*/
-);
+    flowCreationDate DATETIME NOT NULL
+)ENGINE=InnoDB;
 
 CREATE TABLE chatMessages(
     messageId INTEGER PRIMARY KEY AUTO_INCREMENT NOT NULL,
@@ -137,5 +138,37 @@ CREATE TABLE chatMessages(
     ON DELETE RESTRICT ON UPDATE CASCADE,
 /*FIN FOREIGN KEY FLOW ID*/
 
-    content VARCHAR(10000)
-);
+    content VARCHAR(10000),
+    messageSendingDate DATETIME NOT NULL
+)ENGINE=InnoDB;
+
+CREATE TABLE carPool(
+    travelId INTEGER PRIMARY KEY AUTO_INCREMENT NOT NULL,
+    /*DEBUT FOREGIN KEY ID CONDUCTEUR*/
+    userId INTEGER NOT NULL,
+    KEY foreignKeyUserId_carPool(userID),
+    CONSTRAINT `foreignKeyUserId_carPool`
+    FOREIGN KEY (userId) REFERENCES usersProfils (userId)
+    ON DELETE RESTRICT ON UPDATE CASCADE,
+    /*FIN FOREIGN KEY ID CONDUCTEUR*/
+
+    /*DEBUT FOREIGN KEYS PAYS*/
+    countryId INTEGER NOT NULL,
+    KEY foreignKeyCountryId_carPool(countryId),
+    CONSTRAINT `foreignKeyCountryId_carPool`
+    FOREIGN KEY (countryId) REFERENCES countries(countryId)
+    ON DELETE RESTRICT ON UPDATE CASCADE,
+    /*DEBUT FOREIGN KEYS PAYS*/
+
+    /*DEBUT FOREIGN KEY DEPART*/
+    townId INTEGER NOT NULL,
+    KEY foreginKeyTownId_user(townId),
+    CONSTRAINT `foreignKeytOWN_user`
+    FOREIGN KEY (townId) REFERENCES towns(townId)
+    ON DELETE RESTRICT ON UPDATE CASCADE,
+    /*FIN FOREIGN KEY DEPARTY*/
+    destination VARCHAR (250) NOT NULL,
+    carPoolDate DATE NOT NULL,
+    departureHour TIME NOT NULL,
+    carPoolDetails VARCHAR(5000) NOT NULL
+)ENGINE=InnoDB;
