@@ -35,10 +35,10 @@ CREATE TABLE usersProfils(
 /*FIN FOREIGN KEY countryId*/
 
 /*FOREIGN KEY tonwnId*/
-    townId INTEGER NOT NULL,
-    KEY foreginKeyTownId_user(townId),
-    CONSTRAINT `foreignKeytOWN_user`
-    FOREIGN KEY (townId) REFERENCES towns(townId)
+    fkTownId INTEGER NOT NULL,
+    KEY foreginKeyTownId_user(fkTownId),
+    CONSTRAINT `foreignKeyTown_user`
+    FOREIGN KEY (fkTownId) REFERENCES towns(townId)
     ON DELETE RESTRICT ON UPDATE CASCADE,
 /*FIN FOREIGN KEY townId*/
 
@@ -50,6 +50,7 @@ CREATE TABLE usersProfils(
     password VARCHAR(250) NOT NULL,
     homeSpot VARCHAR(50),
     description VARCHAR(350),
+    profilPicture VARCHAR(500),
     profilCreationDate DATETIME NOT NULL
 )ENGINE=InnoDB;
 
@@ -82,7 +83,7 @@ CREATE TABLE forumTopics(
     topicTitle VARCHAR(150) NOT NULL,
     topicFirstContent VARCHAR(3500) NOT NULL,
     topicCreationDate DATETIME NOT NULL
-)ENGINE=InnoDB;
+) ENGINE=InnoDB;
 
 CREATE TABLE forumPosts(
     postId INTEGER PRIMARY KEY AUTO_INCREMENT NOT NULL,
@@ -105,7 +106,7 @@ CREATE TABLE forumPosts(
 
     postContent VARCHAR(3500),
     postCreationDate DATETIME
-)ENGINE=InnoDB;
+) ENGINE=InnoDB;
 
 
 CREATE TABLE chatFlows(
@@ -126,7 +127,7 @@ CREATE TABLE chatFlows(
     ON DELETE RESTRICT ON UPDATE CASCADE,
 /*FIN FOREIGN KEY ID DESTINATAIRE*/
     flowCreationDate DATETIME NOT NULL
-)ENGINE=InnoDB;
+) ENGINE=InnoDB;
 
 CREATE TABLE chatMessages(
     messageId INTEGER PRIMARY KEY AUTO_INCREMENT NOT NULL,
@@ -140,7 +141,7 @@ CREATE TABLE chatMessages(
 
     content VARCHAR(10000),
     messageSendingDate DATETIME NOT NULL
-)ENGINE=InnoDB;
+) ENGINE=InnoDB;
 
 CREATE TABLE carPool(
     travelId INTEGER PRIMARY KEY AUTO_INCREMENT NOT NULL,
@@ -162,13 +163,26 @@ CREATE TABLE carPool(
 
     /*DEBUT FOREIGN KEY DEPART*/
     townId INTEGER NOT NULL,
-    KEY foreginKeyTownId_user(townId),
-    CONSTRAINT `foreignKeytOWN_user`
+    KEY foreginKeyTownId_carPool(townId),
+    CONSTRAINT `foreignKeyTown_carPool`
     FOREIGN KEY (townId) REFERENCES towns(townId)
     ON DELETE RESTRICT ON UPDATE CASCADE,
     /*FIN FOREIGN KEY DEPARTY*/
+
     destination VARCHAR (250) NOT NULL,
     carPoolDate DATE NOT NULL,
     departureHour TIME NOT NULL,
     carPoolDetails VARCHAR(5000) NOT NULL
-)ENGINE=InnoDB;
+) ENGINE=InnoDB;
+
+CREATE TABLE userImages(
+    imageId INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    /*DEBUT FOREGIN KEY ID UTILISATEUR*/
+    userId INTEGER NOT NULL,
+    KEY foreignKeyUserId_image(userID),
+    CONSTRAINT `foreignKeyUserId_image`
+    FOREIGN KEY (userId) REFERENCES usersProfils (userId)
+    ON DELETE RESTRICT ON UPDATE CASCADE,
+    /*FIN FOREIGN KEY ID UTILISATEUR*/
+    imagePath VARCHAR(500) NOT NULL
+) ENGINE=InnoDB;

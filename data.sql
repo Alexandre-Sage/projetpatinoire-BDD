@@ -3,15 +3,15 @@ USE SurfSocialMedia;
 INSERT INTO countries (countryName)
 VALUES("France"),("Esapgne"),("Portugal");
 
-INSERT INTO towns(countryId, townName)
+INSERT INTO towns(countryId, townName, postalCode)
 VALUES
-(1, "Vannes"), (1, "Quiberon"),(1, "Plouharnel"),
-(2, "Burela"),(2, "Viveiro"),(2, "Xove"),
-(3, "Lisboa"),(3, "Nazare"),(3, "Costa Nova");
+(1, "Vannes", 56000), (1, "Quiberon",56001),(1, "Plouharnel", 56002),
+(2, "Burela", 835605),(2, "Viveiro", 80223),(2, "Xove", 64489789),
+(3, "Lisboa", 564654),(3, "Nazare", 546465),(3, "Costa Nova", 465465);
 
-INSERT INTO usersProfils(countryId, townId, firstName, lastName, userName, birthday, email, password, homeSpot, description, profilCreationDate)
+INSERT INTO usersProfils(countryId, fkTownId, firstName, lastName, userName, birthday, email, password, homeSpot, description, profilCreationDate)
 
-VALUES (1, 1, "Alexandre", "Sage", "lalalala","14/09/1993", "alexandresage56@****.com", "password", "Port Blanc", "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.", NOW()),
+VALUES (1, 1, "Alexandre", "Sage", "lalalala","14/09/1993", "test", "n4bQgYhMfWWaL+qgxVrQFaO/TxsrC4Is0V1sFbDwCgg=", "Port Blanc", "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.", NOW()),
 
 (2, 2, "Eduardo", "Muniz", "lelelele", "14/09/1990", "eduardomuniz@****.com", "password", "Barreiros", "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.", NOW()),
 
