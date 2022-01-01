@@ -35,10 +35,10 @@ CREATE TABLE usersProfils(
 /*FIN FOREIGN KEY countryId*/
 
 /*FOREIGN KEY tonwnId*/
-    fkTownId INTEGER NOT NULL,
-    KEY foreginKeyTownId_user(fkTownId),
+    townId INTEGER NOT NULL,
+    KEY foreginKeyTownId_user(townId),
     CONSTRAINT `foreignKeyTown_user`
-    FOREIGN KEY (fkTownId) REFERENCES towns(townId)
+    FOREIGN KEY (townId) REFERENCES towns(townId)
     ON DELETE RESTRICT ON UPDATE CASCADE,
 /*FIN FOREIGN KEY townId*/
 
@@ -49,16 +49,51 @@ CREATE TABLE usersProfils(
     email VARCHAR(500) NOT NULL UNIQUE,
     password VARCHAR(250) NOT NULL,
     homeSpot VARCHAR(50),
-    description VARCHAR(350),
-    profilPicture VARCHAR(500),
+    /*description VARCHAR(350), A ENLEVER?*/
     profilCreationDate DATETIME NOT NULL
 )ENGINE=InnoDB;
+
+/*TABLE IMAGE*/
+CREATE TABLE userImages(
+    imageId INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY,
+
+    /*DEBUT FOREGIN KEY ID UTILISATEUR*/
+    userId INTEGER NOT NULL,
+    KEY foreignKeyUserId_image(userID),
+    CONSTRAINT `foreignKeyUserId_image`
+    FOREIGN KEY (userId) REFERENCES usersProfils (userId)
+    ON DELETE RESTRICT ON UPDATE CASCADE,
+    /*FIN FOREIGN KEY ID UTILISATEUR*/
+
+    imagePath VARCHAR(500) NOT NULL,
+    imageUploadDate DATETIME NOT NULL
+) ENGINE=InnoDB;
+
+/*TABLE PHOTO PROFIL*/
+
+CREATE TABLE profilPicture(
+    /*DEBUT FOREIGN KEY userId*/
+        userId INTEGER NOT NULL,
+        KEY foreignKeyUserId(userID),
+        CONSTRAINT `foreignKeyUserId_profilPicture`
+        FOREIGN KEY (userId) REFERENCES usersProfils (userId)
+        ON DELETE RESTRICT ON UPDATE CASCADE,
+    /*FIN FOREIGN KEY userId*/
+
+    /*DEBUT FOREIGN KEY userId*/
+        imageId INTEGER NOT NULL,
+        KEY foreignKeyImageId(imageId),
+        CONSTRAINT `foreignKeyImageId_profilPicture`
+        FOREIGN KEY (imageId) REFERENCES userImages (imageId)
+        ON DELETE RESTRICT ON UPDATE CASCADE
+    /*FIN FOREIGN KEY userId*/
+) ENGINE=InnoDB;
 
 /*TABLE FORUM*/
 
 CREATE TABLE forumCategories(
     categoryId INTEGER PRIMARY KEY AUTO_INCREMENT NOT NULL,
-    categoriyName VARCHAR(1500) UNIQUE NOT NULL
+    categoryName VARCHAR(1500) UNIQUE NOT NULL
 )ENGINE=InnoDB;
 
 CREATE TABLE forumTopics(
@@ -81,7 +116,6 @@ CREATE TABLE forumTopics(
 /*FIN FOREIGN KEY userId*/
 
     topicTitle VARCHAR(150) NOT NULL,
-    topicFirstContent VARCHAR(3500) NOT NULL,
     topicCreationDate DATETIME NOT NULL
 ) ENGINE=InnoDB;
 
@@ -173,16 +207,4 @@ CREATE TABLE carPool(
     carPoolDate DATE NOT NULL,
     departureHour TIME NOT NULL,
     carPoolDetails VARCHAR(5000) NOT NULL
-) ENGINE=InnoDB;
-
-CREATE TABLE userImages(
-    imageId INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    /*DEBUT FOREGIN KEY ID UTILISATEUR*/
-    userId INTEGER NOT NULL,
-    KEY foreignKeyUserId_image(userID),
-    CONSTRAINT `foreignKeyUserId_image`
-    FOREIGN KEY (userId) REFERENCES usersProfils (userId)
-    ON DELETE RESTRICT ON UPDATE CASCADE,
-    /*FIN FOREIGN KEY ID UTILISATEUR*/
-    imagePath VARCHAR(500) NOT NULL
 ) ENGINE=InnoDB;
