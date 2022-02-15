@@ -49,7 +49,7 @@ CREATE TABLE usersProfils(
     email VARCHAR(500) NOT NULL UNIQUE,
     password VARCHAR(250) NOT NULL,
     homeSpot VARCHAR(50),
-    /*description VARCHAR(350), A ENLEVER?*/
+    adminUser BOOLEAN NOT NULL,
     profilCreationDate DATETIME NOT NULL
 )ENGINE=InnoDB;
 
@@ -58,7 +58,7 @@ CREATE TABLE userImages(
     imageId INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY,
 
     /*DEBUT FOREGIN KEY ID UTILISATEUR*/
-    userId INTEGER NOT NULL,
+    userId INTEGER,
     KEY foreignKeyUserId_image(userID),
     CONSTRAINT `foreignKeyUserId_image`
     FOREIGN KEY (userId) REFERENCES usersProfils (userId)
@@ -66,34 +66,37 @@ CREATE TABLE userImages(
     /*FIN FOREIGN KEY ID UTILISATEUR*/
 
     imagePath VARCHAR(500) NOT NULL,
+    imageTitle VARCHAR(250),
+    imageDescription VARCHAR(500),
     imageUploadDate DATETIME NOT NULL
 ) ENGINE=InnoDB;
 
 /*TABLE PHOTO PROFIL*/
 
 CREATE TABLE profilPicture(
-    /*DEBUT FOREIGN KEY userId*/
-        userId INTEGER NOT NULL,
-        KEY foreignKeyUserId(userID),
-        CONSTRAINT `foreignKeyUserId_profilPicture`
-        FOREIGN KEY (userId) REFERENCES usersProfils (userId)
-        ON DELETE RESTRICT ON UPDATE CASCADE,
-    /*FIN FOREIGN KEY userId*/
+/*DEBUT FOREIGN KEY userId*/
+    userId INTEGER NOT NULL,
+    KEY foreignKeyUserId(userID),
+    CONSTRAINT `foreignKeyUserId_profilPicture`
+    FOREIGN KEY (userId) REFERENCES usersProfils (userId)
+    ON DELETE RESTRICT ON UPDATE CASCADE,
+/*FIN FOREIGN KEY userId*/
 
-    /*DEBUT FOREIGN KEY userId*/
-        imageId INTEGER NOT NULL,
-        KEY foreignKeyImageId(imageId),
-        CONSTRAINT `foreignKeyImageId_profilPicture`
-        FOREIGN KEY (imageId) REFERENCES userImages (imageId)
-        ON DELETE RESTRICT ON UPDATE CASCADE
-    /*FIN FOREIGN KEY userId*/
+/*DEBUT FOREIGN KEY userId*/
+    imageId INTEGER NOT NULL,
+    KEY foreignKeyImageId(imageId),
+    CONSTRAINT `foreignKeyImageId_profilPicture`
+    FOREIGN KEY (imageId) REFERENCES userImages (imageId)
+    ON DELETE RESTRICT ON UPDATE CASCADE
+/*FIN FOREIGN KEY userId*/
 ) ENGINE=InnoDB;
 
 /*TABLE FORUM*/
 
 CREATE TABLE forumCategories(
     categoryId INTEGER PRIMARY KEY AUTO_INCREMENT NOT NULL,
-    categoryName VARCHAR(1500) UNIQUE NOT NULL
+    categoryName VARCHAR(1500) UNIQUE NOT NULL,
+    categoryRules VARCHAR(3500)
 )ENGINE=InnoDB;
 
 CREATE TABLE forumTopics(
@@ -137,17 +140,16 @@ CREATE TABLE forumPosts(
     FOREIGN KEY (userId) REFERENCES usersProfils (userId)
     ON DELETE RESTRICT ON UPDATE CASCADE,
 /*FIN FOREIGN KEY userId*/
-
+    imagePath VARCHAR (500),
     postContent VARCHAR(3500),
     postCreationDate DATETIME
 ) ENGINE=InnoDB;
-
 
 CREATE TABLE chatFlows(
     flowId INTEGER PRIMARY KEY AUTO_INCREMENT NOT NULL,
 /*DEBUT FOREIGN KEY ID DE L'ÉMMETEUR*/
     sendingUserId INTEGER NOT NULL,
-    KEY foreignKeySendingUserId_topic(sendingUserId),
+    KEY foreignKeySendingUserId_flow(sendingUserId),
     CONSTRAINT `foreignKeySendingUserId_flow`
     FOREIGN KEY (sendingUserId) REFERENCES usersProfils (userId)
     ON DELETE RESTRICT ON UPDATE CASCADE,
@@ -155,7 +157,7 @@ CREATE TABLE chatFlows(
 
 /*DEBUT FOREIGN KEY ID DESTINATAIRE*/
     receiverUserId INTEGER NOT NULL,
-    KEY foreignReceiverKeyUserId_topic(receiverUserId),
+    KEY foreignReceiverKeyUserId_flow(receiverUserId),
     CONSTRAINT `foreignKeyReceiverUserId_flow`
     FOREIGN KEY (receiverUserId) REFERENCES usersProfils (userId)
     ON DELETE RESTRICT ON UPDATE CASCADE,
@@ -172,6 +174,12 @@ CREATE TABLE chatMessages(
     FOREIGN KEY (flowId) REFERENCES chatFlows (flowId)
     ON DELETE RESTRICT ON UPDATE CASCADE,
 /*FIN FOREIGN KEY FLOW ID*/
+
+    userId INTEGER NOT NULL,
+    KEY foreignKeyUserId_message(userId),
+    CONSTRAINT `foreignKeyUserId_message`
+    FOREIGN KEY (userId) REFERENCES usersProfils (userId)
+    ON DELETE RESTRICT ON UPDATE CASCADE,
 
     content VARCHAR(10000),
     messageSendingDate DATETIME NOT NULL
