@@ -81,3 +81,5 @@ INSERT INTO userImages (userId, imagePath, imageUploadDate) VALUES(2,"public/ima
 INSERT INTO userImages (userId, imagePath, imageUploadDate) VALUES(3,"public/images/usersImages/7abeff587d0dd90886668d0e051fa99c", NOW());
 
 INSERT INTO profilPicture(imageId, userId) VALUES(2,1);
+INSERT INTO profilPicture(imageId, userId) VALUES(3,2);
+INSERT INTO profilPicture(imageId, userId) VALUES(4,3);

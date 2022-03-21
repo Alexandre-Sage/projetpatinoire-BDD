@@ -50,7 +50,8 @@ CREATE TABLE usersProfils(
     password VARCHAR(250) NOT NULL,
     homeSpot VARCHAR(50),
     adminUser BOOLEAN NOT NULL,
-    profilCreationDate DATETIME NOT NULL
+    profilCreationDate DATETIME NOT NULL,
+    lastConnexion DATETIME
 )ENGINE=InnoDB;
 
 /*TABLE IMAGE*/
